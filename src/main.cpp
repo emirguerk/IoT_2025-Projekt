@@ -2,6 +2,12 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 #include <WiFiManager.h>
+#include "heater.h"
+
+#define DHTTYPE DHT11
+
+const int relayPin = 26;
+const int dhtPin = 16;
 
 // MQTT-Server
 const char* mqtt_server = "broker.hivemq.com";
@@ -14,6 +20,8 @@ const int ledPin2 = 33;
 
 WiFiClient espClient;
 PubSubClient client(espClient);
+
+Heater heater(dhtPin, DHTTYPE, relayPin);
 
 // --- MQTT Callback ---
 void catchMessage(char* topic, byte* payload, unsigned int length) {
@@ -82,6 +90,9 @@ void setup() {
     client.setCallback(catchMessage);
 
     reconnect();
+
+    heater.begin();
+    heater.set_threshold(3);
 }
 
 void loop() {
@@ -104,4 +115,5 @@ void loop() {
 
     lastButtonState = currentButtonState;
     lastTouchState = currentTouchState;
+    heater.loop();
 }
