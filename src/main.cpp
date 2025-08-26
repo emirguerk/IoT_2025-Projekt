@@ -70,9 +70,11 @@ void catchMessage(char* topic, byte* payload, unsigned int length) {
 
 // --- MQTT Reconnect ---
 void reconnect() {
+    char clientName[14];
+    sprintf(clientName, "emotionsband%i", localId);
     while (!client.connected()) {
         Serial.print("MQTT verbinden...");
-        if (client.connect("emxrxan")) {
+        if (client.connect(clientName)) {
             Serial.println("Verbunden!");
             client.subscribe(mqttTopic);
         } else {
