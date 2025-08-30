@@ -24,38 +24,46 @@ Dieses Projekt beschreibt das **VREUNDE-Wärmearmband**, ein System, das Nähe u
 - 1x Button  
 - 1x LED  
 - 1x Wärmepad (z. B. Peltier-Modul)  
+- 1x Relais
 - Kabel, Widerstände und Steckbrett  
+- Stromquelle, 9V (nicht vom ESP!)
 
 ### Anschluss
 
-1. Touchsensor → Eingangspin Microcontroller  
-2. Button → Eingangspin Microcontroller  
-3. LED → Ausgangspin mit Widerstand  
-4. Wärmepad → Ausgang über Relais/Transistor  
-5. Microcontroller → Stromversorgung  
+- Touchsensor → Pin 34
+- Button → Pin 18
+- LED → Pin 26
+- Relais → Pin 14
+- Wärmesensor (DHT) → Pin 16
+- Wärmepad an Relais und externer Stromquelle anschließen
+- Relais mit externer Stromquelle verbinden
+- Microcontroller an Stromversorgung anschließen
+- Alle Pins können im Code geändert werden
 
 ---
 
 ## Funktionsweise
 
 1. Nutzer drückt **Button**, um zu signalisieren, dass er kommunizieren möchte.  
-2. **LED** beim Gegenüber leuchtet auf.  
-3. Beide Nutzer berühren den **Touchsensor**, woraufhin sich das **Wärmepad** bei beiden Endpunkten aktiviert.  
-4. Die Signale werden über **MQTT** ausgetauscht, sodass die Kommunikation über das Internet erfolgt.  
+2. **LED** beim Gegenüber und bei sich selbst blinkt.
+3. Gegenüber bestätigt mit Druck auf **Button**.
+4. **LED** leuchtet bei beiden durchgehend.
+5. Nutzer berührt den **Touchsensor**, woraufhin sich das **Wärmepad** beim bGegenüber aktiviert.  
+6. Kommunikation kann durch einen Nutzer durch Druck auf **Button** beendet werden.
+7. Die Signale werden über **MQTT** ausgetauscht, sodass die Kommunikation über das Internet erfolgt.  
 
 ---
 
 ## Software & Installation
 
-1. Microcontroller mit der bereitgestellten Firmware programmieren  
-2. WiFiManager starten, um **WLAN-Zugang** zu konfigurieren  
-3. MQTT-Broker einstellen (lokal oder Cloud)  
-4. Endpunkte verbinden und testen: Button → LED, Touch → Wärmepad  
+1. Code anpassen → mqtt_server, mqttTopic und localId konfigurieren, localId muss auf beiden Geräten unterschiedlich sein
+2. Code auf ESP installieren
+3. WiFiManager starten, um **WLAN-Zugang** zu konfigurieren  
 
 ---
 
 ## Nutzung
 
-- Drücke den **Button**, um Kontakt anzufordern  
+- Drücke den **Button**, um Kontakt anzufordern und zu akzeptieren
 - Berühre den **Touchsensor**, um Wärme zu aktivieren  
-- Sieh die **LED** beim Gegenüber aufleuchten und fühle die Wärme am Pad  
+- **LED** zeigt an, ob Kommunikation angefordert wurde (blinken) oder bereits besteht (leuchten)
